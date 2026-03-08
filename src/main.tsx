@@ -7,7 +7,7 @@ import { AuthProvider } from './contexts/AuthContext.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
+    <BrowserRouter basename="local_employee">
       <AuthProvider>
         <App />
       </AuthProvider>

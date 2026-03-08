@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Directory - Premium SaaS</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Outfit for Display/Headings, Plus Jakarta Sans for Body -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Remix Icons (cdnjs-hosted) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.min.css">
+
+    <style>
+        /* ==============================
+           DESIGN SYSTEM & CSS TOKENS
+           Aesthetic: Soft-Glassmorphism
+        ============================== */
+        :root {
+            /* Backgrounds & Surfaces */
+            --bg-base: #f1f5f9;
+            --surface: rgba(255, 255, 255, 0.45);
+            --panel: rgba(255, 255, 255, 0.75);
+            --panel-hover: rgba(255, 255, 255, 0.9);
+            --panel-active: rgba(255, 255, 255, 1);
+
+            /* Borders */
+            --border: rgba(255, 255, 255, 0.6);
+            --border-highlight: rgba(255, 255, 255, 1);
+            --border-subtle: rgba(148, 163, 184, 0.15);
+
+            /* Accents */
+            --accent: #6366f1;
+            /* Indigo 500 */
+            --accent-light: #818cf8;
+            /* Indigo 400 */
+            --accent-mid: #4f46e5;
+            /* Indigo 600 */
+            --accent-hover: #4338ca;
+            /* Indigo 700 */
+            --accent-glow: rgba(99, 102, 241, 0.25);
+
+            /* Typography Colors */
+            --text-heading: #0f172a;
+            /* Slate 900 */
+            --text-body: #334155;
+            /* Slate 700 */
+            --text-muted: #64748b;
+            /* Slate 500 */
+            --text-light: #94a3b8;
+            /* Slate 400 */
+
+            /* Badge Colors by Type */
+            --badge-fulltime-bg: rgba(99, 102, 241, 0.15);
+            --badge-fulltime-text: #4f46e5;
+            --badge-contract-bg: rgba(245, 158, 11, 0.15);
+            --badge-contract-text: #d97706;
+            --badge-parttime-bg: rgba(16, 185, 129, 0.15);
+            --badge-parttime-text: #059669;
+
+            /* Shadows */
+            --shadow-sm: 0 4px 6px -1px rgba(15, 23, 42, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            --shadow-md: 0 10px 15px -3px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            --shadow-lg: 0 20px 25px -5px rgba(15, 23, 42, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            --shadow-xl: 0 25px 50px -12px rgba(15, 23, 42, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            --shadow-glow: 0 0 15px var(--accent-glow);
+
+            /* Animations */
+            --transition-snap: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* globals */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-body);
+            background-color: var(--bg-base);
+            /* Soft, luxurious gradient wash behind the glass UI */
+            background-image:
+                radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.9) 0%, transparent 100%);
+            background-attachment: fixed;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            line-height: 1.5;
+        }
+
+        input,
+        button {
+            font-family: inherit;
+        }
+
+        /* Typography mixins */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .display-font {
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-heading);
+            letter-spacing: -0.02em;
+        }
+
+        /* Glass Panel Foundation */
+        .glass-panel {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* ==============================
+           LAYOUT STRUCTURE
+        ============================== */
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* 1. TOP NAVIGATION */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border);
+            z-index: 50;
+            flex-shrink: 0;
+        }
+
+        .nav-left,
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .nav-right {
+            gap: 16px;
+        }
+
+        /* Logo Component */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--text-heading);
+            text-decoration: none;
+        }
+
+        .logo-mark {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+            box-shadow: 0 8px 16px var(--accent-glow);
+        }
+
+        /* Nav Links */
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 15px;
+            padding: 8px 0;
+            position: relative;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-heading);
+        }
+
+        .nav-links a.active {
+            color: var(--text-heading);
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 4px;
+        }
+
+        /* Icon Buttons */
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            border: 1px solid transparent;
+            background: transparent;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: var(--transition-snap);
+        }
+
+        .icon-btn:hover {
+            background: var(--panel);
+            border-color: var(--border-highlight);
+            color: var(--accent-mid);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .icon-btn.small {
+            width: 32px;
+            height: 32px;
+            font-size: 16px;
+            border-radius: 8px;
+        }
+
+        /* User Avatar Small */
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1e293b, #334155);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 15px;
+            border: 2px solid white;
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
+            margin-left: 8px;
+            transition: var(--transition-snap);
+        }
+
+        .user-avatar:hover {
+            box-shadow: var(--shadow-md);
+            transform: scale(1.05);
+        }
+
+        /* 2. MAIN WORKSPACE */
+        .workspace {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            padding: 24px 40px 40px 40px;
+            gap: 32px;
+            max-width: 1800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* 3. SIDEBAR (DEPARTMENTS) */
+        .sidebar {
+            width: 300px;
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+            flex-shrink: 0;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .dept-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .dept-title i {
+            color: var(--accent);
+            font-size: 22px;
+            padding: 8px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .dept-title h3 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* Search Input Component */
+        .search-input {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0 16px;
+            height: 44px;
+            transition: var(--transition-snap);
+            position: relative;
+        }
+
+        .search-input.small {
+            height: 40px;
+            padding: 0 12px;
+        }
+
+        .search-input:focus-within {
+            background: white;
+            border-color: var(--accent-light);
+            box-shadow: 0 0 0 4px var(--accent-glow);
+        }
+
+        .search-input i {
+            color: var(--text-muted);
+            font-size: 18px;
+        }
+
+        .search-input input {
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 100%;
+            padding: 0 12px;
+            font-size: 14px;
+            color: var(--text-heading);
+        }
+
+        .search-input input::placeholder {
+            color: var(--text-light);
+        }
+
+        /* Department Tree List */
+        .dept-tree {
+            list-style: none;
+            padding: 16px;
+            overflow-y: auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .dept-tree::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .dept-tree::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.3);
+            border-radius: 4px;
+        }
+
+        .dept-item {
+            padding: 12px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-body);
+            font-size: 14px;
+            font-weight: 600;
+            transition: var(--transition-snap);
+            border: 1px solid transparent;
+        }
+
+        .dept-item:hover {
+            background: var(--panel-hover);
+        }
+
+        .dept-item.active {
+            background: var(--panel-active);
+            color: var(--accent-mid);
+            border-color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .dept-count {
+            background: rgba(15, 23, 42, 0.05);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            transition: var(--transition-snap);
+        }
+
+        .dept-item.active .dept-count {
+            background: var(--accent-light);
+            color: white;
+            box-shadow: 0 2px 6px var(--accent-glow);
+        }
+
+        /* 4. CONTENT AREA & TOOLBAR */
+        .content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            overflow: hidden;
+        }
+
+        .toolbar {
+            border-radius: 20px;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
+            flex-shrink: 0;
+            background: var(--panel);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+        }
+
+        .toolbar-left,
+        .toolbar-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            height: 44px;
+            padding: 0 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition-snap);
+            border: 1px solid transparent;
+            outline: none;
+        }
+
+        .btn i {
+            font-size: 18px;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 4px 12px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border-color: var(--accent-light);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--text-heading);
+            border-color: var(--border-highlight);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-secondary:hover {
+            background: #f8fafc;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-label {
+            background: transparent;
+            color: var(--text-heading);
+            padding: 0 12px;
+            font-size: 15px;
+        }
+
+        .btn-label:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Toolbar Pagination */
+        .pagination-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-right: 20px;
+            margin-right: 4px;
+            border-right: 1px solid var(--border-subtle);
+        }
+
+        .page-counter {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* 5. MAIN CARD GRID */
+        .card-grid {
+            flex: 1;
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+            align-content: start;
+            padding: 4px 4px 24px 4px;
+            /* padding to allow shadow bleed */
+        }
+
+        .card-grid::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .card-grid::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .card-grid::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.3);
+            border-radius: 10px;
+        }
+
+        .card-grid::-webkit-scrollbar-thumb:hover {
+            background: rgba(148, 163, 184, 0.5);
+        }
+
+        /* Employee Card Component */
+        .employee-card {
+            background: var(--panel);
+            border-radius: 20px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+            transition: var(--transition-smooth);
+
+            /* Initial state for staggered staggered fade logic */
+            opacity: 0;
+            transform: translateY(20px);
+            animation: staggerFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes staggerFadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .employee-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-xl);
+            border-color: white;
+            background: white;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        /* Avatar System */
+        .avatar-wrapper {
+            position: relative;
+            width: 72px;
+            height: 72px;
+        }
+
+        .avatar-initials {
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 26px;
+            box-shadow: var(--shadow-md);
+            border: 3px solid white;
+        }
+
+        /* Remote / Office Indicator */
+        .remote-indicator {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: white;
+            color: var(--accent-mid);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            box-shadow: var(--shadow-md);
+            border: 2px solid white;
+            z-index: 2;
+        }
+
+        .remote-indicator.office {
+            color: var(--badge-parttime-text);
+        }
+
+        /* Data Badges */
+        .badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .badge-Full-Time {
+            background: var(--badge-fulltime-bg);
+            color: var(--badge-fulltime-text);
+        }
+
+        .badge-Contract {
+            background: var(--badge-contract-bg);
+            color: var(--badge-contract-text);
+        }
+
+        .badge-Part-Time {
+            background: var(--badge-parttime-bg);
+            color: var(--badge-parttime-text);
+        }
+
+        /* Card Content */
+        .card-body h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin-bottom: 6px;
+            line-height: 1.2;
+        }
+
+        .card-body p {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Card Footer Actions */
+        .card-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .card-actions .btn {
+            flex: 1;
+            height: 40px;
+            font-size: 14px;
+        }
+
+        .card-actions .btn-icon {
+            flex: 0 0 40px;
+            padding: 0;
+            background: white;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        .card-actions .btn-icon:hover {
+            color: var(--accent);
+            border-color: var(--accent-light);
+            background: #f8fafc;
+        }
+
+        /* Empty State */
+        .empty-state {
+            grid-column: 1 / -1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 20px;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: var(--text-light);
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: var(--text-heading);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-container">
+
+        <!-- TOP NAVIGATION -->
+        <nav class="top-nav">
+            <div class="nav-left">
+                <a href="#" class="logo">
+                    <div class="logo-mark"><i class="ri-triangle-fill"></i></div>
+                    <span>Nexus</span>
+                </a>
+                <div class="nav-links">
+                    <a href="#" class="active">Directory</a>
+                    <a href="#">Departments</a>
+                    <a href="#">Reporting</a>
+                    <a href="#">Configuration</a>
+                </div>
+            </div>
+
+            <div class="nav-right">
+                <button class="icon-btn" aria-label="Notifications">
+                    <i class="ri-notification-3-line"></i>
+                </button>
+                <button class="icon-btn" aria-label="Settings">
+                    <i class="ri-settings-4-line"></i>
+                </button>
+                <div class="user-avatar" title="Current User">MR</div>
+            </div>
+        </nav>
+
+        <!-- MAIN WORKSPACE -->
+        <main class="workspace">
+
+            <!-- LEFT SIDEBAR -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <div class="dept-title">
+                        <i class="ri-layout-masonry-line"></i>
+                        <h3 class="display-font">Departments</h3>
+                    </div>
+                    <div class="search-input small">
+                        <i class="ri-search-line"></i>
+                        <input type="text" id="dept-search" placeholder="Filter departments...">
+                    </div>
+                </div>
+                <ul class="dept-tree" id="dept-tree">
+                    <!-- Javascript Injection -->
+                </ul>
+            </aside>
+
+            <!-- RIGHT CONTENT AREA -->
+            <section class="content-area">
+
+                <!-- TOOLBAR -->
+                <div class="toolbar">
+                    <div class="toolbar-left">
+                        <button class="btn btn-primary">
+                            <i class="ri-add-line"></i> New
+                        </button>
+                        <button class="btn btn-label">
+                            Employee <i class="ri-arrow-down-s-line"></i>
+                        </button>
+                    </div>
+
+                    <div class="toolbar-right">
+                        <div class="search-input" style="width: 260px;">
+                            <i class="ri-search-line"></i>
+                            <input type="text" id="employee-search" placeholder="Search by name or role...">
+                        </div>
+
+                        <div class="pagination-controls">
+                            <span class="page-counter" id="page-counter">0-0 of 0</span>
+                            <button class="icon-btn small" id="prev-page" title="Previous Page">
+                                <i class="ri-arrow-left-s-line"></i>
+                            </button>
+                            <button class="icon-btn small" id="next-page" title="Next Page">
+                                <i class="ri-arrow-right-s-line"></i>
+                            </button>
+                        </div>
+
+                        <button class="icon-btn"><i class="ri-filter-3-line"></i></button>
+                        <button class="icon-btn"><i class="ri-sort-desc"></i></button>
+                    </div>
+                </div>
+
+                <!-- CARD GRID -->
+                <div class="card-grid" id="card-grid">
+                    <!-- Javascript Injection -->
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        /**
+         * FIREBASE INTEGRATION
+         * The user configures their backend details below.
+         * If omitted, the engine smoothly falls back to mock data 
+         * to guarantee zero console errors and immediate visual feedback.
+         */
+        const firebaseConfig = {
+            apiKey: "AIzaSyC8XxTaJdWjk3z_TOsyv4VjeeD2xAdApSw",
+            authDomain: "mech-48488.firebaseapp.com",
+            projectId: "mech-48488"
+        };
+
+        let db = null;
+        let useMockData = true;
+
+        try {
+            if (firebaseConfig.projectId && firebaseConfig.apiKey) {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                useMockData = false;
+            } else {
+                console.info("Firebase Config not supplied. Running layout with high-fidelity mock data.");
+            }
+        } catch (error) {
+            console.warn("Firebase initialization fallback triggered.", error);
+        }
+
+        // High-Fidelity Mock Database
+        const mockDatabase = [
+            { id: '1', name: 'Sarah Jenkins', role: 'Staff Engineer', department: 'Engineering', type: 'Full-Time', remote: true },
+            { id: '2', name: 'Marcus Chen', role: 'Product Designer', department: 'Design', type: 'Full-Time', remote: false },
+            { id: '3', name: 'Elena Rodriguez', role: 'Frontend Developer', department: 'Engineering', type: 'Contract', remote: true },
+            { id: '4', name: 'James Wilson', role: 'Marketing Director', department: 'Marketing', type: 'Full-Time', remote: false },
+            { id: '5', name: 'Aisha Patel', role: 'UX Researcher', department: 'Design', type: 'Part-Time', remote: true },
+            { id: '6', name: 'David Kim', role: 'Backend Engineer', department: 'Engineering', type: 'Full-Time', remote: false },
+            { id: '7', name: 'Rachel Green', role: 'Sales Lead', department: 'Sales', type: 'Full-Time', remote: false },
+            { id: '8', name: 'Tom Hardy', role: 'Product Manager', department: 'Product', type: 'Full-Time', remote: true },
+            { id: '9', name: 'Olivia Martinez', role: 'Data Scientist', department: 'Engineering', type: 'Full-Time', remote: true },
+            { id: '10', name: 'Liam Scott', role: 'HR Manager', department: 'Operations', type: 'Full-Time', remote: false },
+            { id: '11', name: 'Sophia Lee', role: 'Visual Designer', department: 'Design', type: 'Contract', remote: true },
+            { id: '12', name: 'Lucas Moore', role: 'Account Executive', department: 'Sales', type: 'Full-Time', remote: true }
+        ];
+
+        // Global State
+        let allEmployees = [];
+        let state = {
+            searchQuery: '',
+            activeDept: 'All',
+            currentPage: 1,
+            itemsPerPage: 6
+        };
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', async () => {
+            allEmployees = await fetchEmployees();
+            renderUI();
+            setupEventListeners();
+        });
+
+        // Data Fetching
+        async function fetchEmployees() {
+            if (!useMockData && db) {
+                try {
+                    const snap = await getDocs(collection(db, "employees"));
+                    if (!snap.empty) {
+                        return snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    }
+                } catch (e) {
+                    console.error("Firebase fetch failed, deploying mock data:", e);
+                }
+            }
+            return mockDatabase;
+        }
+
+        // Core Render Loop
+        function renderUI() {
+            renderDepartments();
+            renderCards();
+        }
+
+        // Setup Event Listeners
+        function setupEventListeners() {
+            // Main search
+            document.getElementById('employee-search').addEventListener('input', (e) => {
+                state.searchQuery = e.target.value.toLowerCase();
+                state.currentPage = 1;
+                renderCards();
+            });
+
+            // Dept filter search
+            document.getElementById('dept-search').addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                const items = document.querySelectorAll('.dept-item[data-dept]');
+                items.forEach(item => {
+                    const deptName = item.getAttribute('data-dept').toLowerCase();
+                    if (deptName.includes(query) || deptName === 'all') {
+                        item.style.display = 'flex';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+
+            // Pagination mechanics
+            document.getElementById('prev-page').addEventListener('click', () => {
+                if (state.currentPage > 1) {
+                    state.currentPage--;
+                    renderCards();
+                }
+            });
+
+            document.getElementById('next-page').addEventListener('click', () => {
+                const total = getFilteredData().length;
+                if ((state.currentPage * state.itemsPerPage) < total) {
+                    state.currentPage++;
+                    renderCards();
+                }
+            });
+        }
+
+        // Data processing pipeline
+        function getFilteredData() {
+            return allEmployees.filter(emp => {
+                const matchesSearch = emp.name.toLowerCase().includes(state.searchQuery) ||
+                    emp.role.toLowerCase().includes(state.searchQuery);
+                const matchesDept = state.activeDept === 'All' || emp.department === state.activeDept;
+                return matchesSearch && matchesDept;
+            });
+        }
+
+        // Render Sidebar
+        function renderDepartments() {
+            const tree = document.getElementById('dept-tree');
+
+            // Tally counts natively from current dataset
+            const counts = { 'All': allEmployees.length };
+            allEmployees.forEach(e => {
+                counts[e.department] = (counts[e.department] || 0) + 1;
+            });
+
+            const uniqueDepts = ['All', ...[...new Set(allEmployees.map(e => e.department))].sort()];
+
+            tree.innerHTML = uniqueDepts.map(dept => `
+                <li class="dept-item ${dept === state.activeDept ? 'active' : ''}" data-dept="${dept}">
+                    <span>${dept === 'All' ? 'All Departments' : dept}</span>
+                    <span class="dept-count">${counts[dept] || 0}</span>
+                </li>
+            `).join('');
+
+            // Attach bindings
+            tree.querySelectorAll('.dept-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    state.activeDept = item.getAttribute('data-dept');
+                    state.currentPage = 1;
+                    renderUI(); // refresh both tree highlights and grid
+                });
+            });
+        }
+
+        // Render Card Grid
+        function renderCards() {
+            const grid = document.getElementById('card-grid');
+            const data = getFilteredData();
+
+            // Update counter logic
+            const total = data.length;
+            const startStr = (state.currentPage - 1) * state.itemsPerPage;
+            const endStr = Math.min(startStr + state.itemsPerPage, total);
+
+            const counter = document.getElementById('page-counter');
+            if (total === 0) {
+                counter.innerText = '0 of 0';
+            } else {
+                counter.innerText = `${startStr + 1}-${endStr} of ${total}`;
+            }
+
+            // Button Disabling logic
+            const prevBtn = document.getElementById('prev-page');
+            const nextBtn = document.getElementById('next-page');
+            prevBtn.style.opacity = state.currentPage === 1 ? '0.4' : '1';
+            prevBtn.style.cursor = state.currentPage === 1 ? 'not-allowed' : 'pointer';
+            nextBtn.style.opacity = (state.currentPage * state.itemsPerPage) >= total ? '0.4' : '1';
+            nextBtn.style.cursor = (state.currentPage * state.itemsPerPage) >= total ? 'not-allowed' : 'pointer';
+
+            // Clear Grid
+            grid.innerHTML = '';
+
+            if (total === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="ri-search-eye-line"></i>
+                        <h3>No employees found</h3>
+                        <p>Adjust your search or department filters</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Slice data for pagination
+            const paginatedData = data.slice(startStr, endStr);
+
+            paginatedData.forEach((emp, index) => {
+                // Generative Avatar Logic
+                const initials = emp.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                const gradient = generateGradientFromName(emp.name);
+
+                const remoteIcon = emp.remote ? 'ri-home-wifi-line' : 'ri-building-4-line';
+                const remoteClass = emp.remote ? 'remote' : 'office';
+                const remoteTitle = emp.remote ? 'Remote Worker' : 'In-Office Worker';
+                const safeType = (emp.type || 'Full-Time').replace(/\s+/g, '-');
+
+                const card = document.createElement('div');
+                card.className = 'employee-card';
+                // Delay increment for smooth staggered entry
+                card.style.animationDelay = `${index * 0.08}s`;
+
+                card.innerHTML = `
+                    <div class="card-header" style="position: relative; display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;">
+                        <div class="avatar-wrapper" style="position: relative; width: 84px; height: 84px;">
+                            <div class="avatar-initials" style="background: ${gradient}; width: 100%; height: 100%; border-radius: 22px; display: flex; align-items: center; justify-content: center; color: white; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 32px; box-shadow: var(--shadow-md); border: 4px solid white;">${initials}</div>
+                            
+                            <!-- 1. Remote Indicator Icon (TOP-LEFT per request) -->
+                            <div class="remote-indicator ${remoteClass}" title="${remoteTitle}" style="position: absolute; top: -10px; left: -10px; background: ${emp.remote ? 'var(--accent)' : '#10b981'}; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: var(--shadow-md); border: 3px solid white; z-index: 10;">
+                                <i class="${remoteIcon}"></i>
+                            </div>
+                        </div>
+
+                        <!-- 5. Employment-type Badge -->
+                        <div class="badge badge-${safeType}" style="margin-top: 4px;">${emp.type || 'Full-Time'}</div>
+                    </div>
+
+                    <div class="card-body">
+                        <!-- 2. Employee Name -->
+                        <h3 style="font-size: 22px; font-weight: 700; color: var(--text-heading); margin-bottom: 4px; line-height: 1.2;">${emp.name}</h3>
+                        
+                        <!-- 3. Role/Title -->
+                        <p style="font-size: 15px; color: var(--accent); font-weight: 600; margin-bottom: 16px;">${emp.role}</p>
+                        
+                        <div style="background: rgba(15, 23, 42, 0.03); padding: 12px; border-radius: 12px; font-size: 13px; color: var(--text-muted); display: flex; flex-direction: column; gap: 8px; border: 1px solid rgba(15, 23, 42, 0.05);">
+                           <div style="display: flex; align-items: center; gap: 8px;">
+                               <i class="ri-map-pin-line" style="color: var(--text-light);"></i>
+                               <span>Default Hub, Local</span>
+                           </div>
+                           <div style="display: flex; align-items: center; gap: 8px;">
+                               <i class="ri-star-fill" style="color: #f59e0b;"></i>
+                               <span style="font-weight: 700; color: var(--text-heading);">4.9 Rating</span>
+                           </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Message + Call Action Buttons -->
+                    <div class="card-actions" style="margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border-subtle); display: flex; gap: 12px;">
+                        <a href="https://wa.me/${(emp.phone || '').replace(/\D/g, '')}" target="_blank" rel="noopener noreferrer" class="btn btn-icon" title="WhatsApp Message" style="flex: 0 0 48px; height: 48px; border-radius: 12px; background: white; border: 1px solid var(--border); color: var(--text-muted); display: flex; align-items: center; justify-content: center; transition: var(--transition-snap);">
+                            <i class="ri-whatsapp-line" style="font-size: 24px;"></i>
+                        </a>
+                        <a href="tel:${emp.phone || ''}" class="btn btn-primary" style="flex: 1; height: 48px; border-radius: 12px; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <i class="ri-phone-line"></i> Call Provider
+                        </a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Utility: Hash name string to a consistent beautiful gradient
+        function generateGradientFromName(name) {
+            const luxuryPalettes = [
+                ['#ff9a9e', '#fecfef'], // Rose Gold
+                ['#84fab0', '#8fd3f4'], // Aquamarine Smooth
+                ['#a18cd1', '#fbc2eb'], // Soft Violet
+                ['#fad0c4', '#ffd1ff'], // Peach Dawn
+                ['#a8edea', '#fed6e3'], // Ice Frosting
+                ['#4facfe', '#00f2fe'], // Neon Azure
+                ['#43e97b', '#38f9d7'], // Emerald Glow
+            ];
+
+            let hash = 0;
+            for (let i = 0; i < name.length; i++) {
+                hash = name.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            const index = Math.abs(hash) % luxuryPalettes.length;
+            const [color1, color2] = luxuryPalettes[index];
+            return `linear-gradient(135deg, ${color1}, ${color2})`;
+        }
+    </script>
+</body>
+
+</html>
